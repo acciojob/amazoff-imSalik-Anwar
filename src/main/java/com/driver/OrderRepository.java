@@ -14,7 +14,6 @@ public class OrderRepository {
     HashMap<String, List<Order>> partnerOrderDB = new HashMap<>();
     public void addOrder(Order order) {
         orderDB.put(order.getId(), order);
-//        System.out.println(orderDB.get(order.getId()));
     }
 
     public void addPartner(String partnerId) {
@@ -57,8 +56,10 @@ public class OrderRepository {
 
     public List<String> getOrdersByPartnerId(String partnerId){
         List<String> list = new ArrayList<>();
-        for(Order order : partnerOrderDB.get(partnerId)){
-            list.add(order.getId());
+        if(partnerOrderDB.containsKey(partnerId)) {
+            for (Order order : partnerOrderDB.get(partnerId)) {
+                list.add(order.getId());
+            }
         }
         return list;
     }
@@ -99,25 +100,28 @@ public class OrderRepository {
     }
 
     public void deletePartnerById(String partnerId) {
-        deliveryPartnerDB.remove(partnerId);
-        partnerOrderDB.remove(partnerId);
+        if(deliveryPartnerDB.containsKey(partnerId) && partnerOrderDB.containsKey(partnerId)) {
+            deliveryPartnerDB.remove(partnerId);
+            partnerOrderDB.remove(partnerId);
+        }
     }
 
     public void deleteOrderById(String orderId) {
-        orderDB.remove(orderId);
-
-        for(String partnerID : partnerOrderDB.keySet()){
-            List<Order> orderList = partnerOrderDB.get(partnerID);
-            boolean orderRemoved = false;
-            for(int i = 0; i < orderList.size(); i++){
-                if(orderList.get(i).getId().equals(orderId)){
-                    orderList.remove(i);
-                    orderRemoved = true;
+        if(orderDB.containsKey(orderId)) {
+            orderDB.remove(orderId);
+            for (String partnerID : partnerOrderDB.keySet()) {
+                List<Order> orderList = partnerOrderDB.get(partnerID);
+                boolean orderRemoved = false;
+                for (int i = 0; i < orderList.size(); i++) {
+                    if (orderList.get(i).getId().equals(orderId)) {
+                        orderList.remove(i);
+                        orderRemoved = true;
+                        break;
+                    }
+                }
+                if (orderRemoved) {
                     break;
                 }
-            }
-            if(orderRemoved){
-                break;
             }
         }
     }
