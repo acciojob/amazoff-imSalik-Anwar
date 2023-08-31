@@ -55,14 +55,18 @@ public class OrderRepository {
         return 0;
     }
 
-    public List<Order> getOrdersByPartnerId(String partnerId) {
-        return partnerOrderDB.get(partnerId);
+    public List<String> getOrdersByPartnerId(String partnerId){
+        List<String> list = new ArrayList<>();
+        for(Order order : partnerOrderDB.get(partnerId)){
+            list.add(order.getId());
+        }
+        return list;
     }
 
-    public List<Order> getAllOrders() {
-        List<Order> orderList = new ArrayList<>();
+    public List<String> getAllOrders() {
+        List<String> orderList = new ArrayList<>();
         for(String orderId : orderDB.keySet()){
-            orderList.add(orderDB.get(orderId));
+            orderList.add(orderId);
         }
         return orderList;
     }

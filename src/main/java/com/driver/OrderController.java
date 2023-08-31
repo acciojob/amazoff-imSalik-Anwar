@@ -62,16 +62,16 @@ public class OrderController {
     }
 
     @GetMapping("/get-orders-by-partner-id/{partnerId}")
-    public ResponseEntity<List<Order>> getOrdersByPartnerId(@PathVariable String partnerId){
+    public ResponseEntity<List<String>> getOrdersByPartnerId(@PathVariable String partnerId){
         //orders should contain a list of orders by PartnerId
-        List<Order> orders = orderService.getOrdersByPartnerId(partnerId);
+        List<String> orders = orderService.getOrdersByPartnerId(partnerId);
         return new ResponseEntity<>(orders, HttpStatus.CREATED);
     }
 
     @GetMapping("/get-all-orders")
-    public ResponseEntity<List<Order>> getAllOrders(){
+    public ResponseEntity<List<String>> getAllOrders(){
         //Get all orders
-        List<Order> orders = orderService.getAllOrders();
+        List<String> orders = orderService.getAllOrders();
         return new ResponseEntity<>(orders, HttpStatus.CREATED);
     }
 
