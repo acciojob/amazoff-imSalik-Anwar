@@ -111,15 +111,18 @@ public class OrderRepository {
             orderDB.remove(orderId);
             for (String partnerID : partnerOrderDB.keySet()) {
                 List<Order> orderList = partnerOrderDB.get(partnerID);
+                String partnerId = "";
                 boolean orderRemoved = false;
                 for (int i = 0; i < orderList.size(); i++) {
                     if (orderList.get(i).getId().equals(orderId)) {
                         orderList.remove(i);
                         orderRemoved = true;
+                        partnerId = partnerID;
                         break;
                     }
                 }
                 if (orderRemoved) {
+                    deliveryPartnerDB.get(partnerId).setNumberOfOrders(-1);
                     break;
                 }
             }
